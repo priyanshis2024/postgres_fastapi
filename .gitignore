@@ -1,0 +1,6 @@
+__pycache__
+myenv/
+.env
+.vscode
+app/__pycache__
+router/__pycache__

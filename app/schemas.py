@@ -1,4 +1,4 @@
-from pydantic import BaseModel,EmailStr,validator
+from pydantic import BaseModel,conint,EmailStr,validator
 from typing import Optional
 from datetime import datetime
 
@@ -45,3 +45,7 @@ class TokenData(BaseModel):
 
 class LogoutRequest(BaseModel):
     user_id: int
+
+class Vote(BaseModel):
+    post_id : int
+    dir: conint(le=1)

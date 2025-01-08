@@ -1,0 +1,6 @@
+[alembic]
+# Path to migration scripts
+script_location = alembic
+
+# Database URL
+sql_alchemy_url = driver://user:pass@localhost/dbname

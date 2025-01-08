@@ -1,6 +1,15 @@
+# python
+*.pyc
+*.pyo
+*.pyd
 __pycache__
+
 myenv/
 .env
 .vscode
 app/__pycache__
 router/__pycache__
+db_fastapi/__pycache__
+versions/__pycache__
+
+alembic.ini

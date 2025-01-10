@@ -1,5 +1,3 @@
-from tests.database import client
-
 def test_root(client):
     res = client.get("/")
     # print(res)
@@ -27,3 +25,7 @@ def test_login_user(client):
     res = client.post("/login",data={"username":"callmephone@gmail.com","password":"password123"})
     print(res.json())
     assert res.status_code == 200
+
+def test_incorrect_login(client):
+    res = client.post("/login",data={"username":"callmephone@gmail.com","password":"wrongPassword"})
+    assert res.status_code == 403

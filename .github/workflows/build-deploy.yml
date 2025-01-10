@@ -44,11 +44,8 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v2
 
-            - name: Install pytest
-              run: pip install pytest
+            - name: Install pytest and fastapi
+              run: pip install fastapi pytest 
 
             - name: Run pytest tests
               run: pytest
-            
-            - name: Install fastapi
-              run: pip install fastapi pytest

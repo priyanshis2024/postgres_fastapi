@@ -1,16 +1,10 @@
 name: Build and Deploy Code
 
 on: [push, pull_request]
-    # push:
-    #     branches:
-    #         - "main"
-    # pull_request:
-    #     branches:
-    #         - "test"
 
 jobs:
     Installation:
-        environment: 
+        environment:
             name: testing
         env:
             DATABASE_HOSTNAME: ${{ secrets.DATABASE_HOSTNAME }}
@@ -21,22 +15,24 @@ jobs:
             SECRET_KEY: ${{ secrets.SECRET_KEY }}
             ALGORITHM: ${{ secrets.ALGORITHM }}
             ACCESS_TOKEN_EXPIRE_MINUTES: ${{ secrets.ACCESS_TOKEN_EXPIRE_MINUTES }}
-        
+
         services:
             postgres:
                 image: postgres
                 env:
                     POSTGRES_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
                     POSTGRES_DB: ${{ secrets.DATABASE_NAME }}_test
+                    POSTGRES_USER: ${{ secrets.DATABASE_USERNAME }}
                 ports:
-                - 5432:5432
+                    - 5432:5432
                 options: >-
                     --health-cmd pg_isready
                     --health-interval 10s
                     --health-timeout 5s
                     --health-retries 5
-        runs-on: windows-latest
-                    
+
+        runs-on: ubuntu-latest  # Changed to a Linux runner
+
         steps:
             - name: Checkout code
               uses: actions/checkout@v2
@@ -53,14 +49,22 @@ jobs:
               run: pip install -r requirements.txt
 
     Test:
-        runs-on: windows-latest
+        runs-on: ubuntu-latest  # Changed to a Linux runner
         needs: Installation
         steps:
             - name: Checkout code
               uses: actions/checkout@v2
 
-            - name: Install pytest, httpx and fastapi
-              run: pip install fastapi httpx pytest 
+            - name: Install pytest, httpx, fastapi
+              run: pip install fastapi httpx pytest
+
+            - name: Wait for PostgreSQL to be ready
+              run: |
+                echo "Waiting for PostgreSQL to be ready..."
+                until nc -zv ${{ secrets.DATABASE_HOSTNAME }} 5432; do
+                  sleep 1
+                done
+                echo "PostgreSQL is ready!"
 
             - name: Run pytest tests
               run: pytest

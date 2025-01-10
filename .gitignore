@@ -13,3 +13,4 @@ db_fastapi/__pycache__
 versions/__pycache__
 tests/__pycache__
 alembic.ini
+.pytest_cache/

@@ -49,6 +49,8 @@ jobs:
               run: pip install -r requirements.txt
 
     Test:
+        environment:
+            name: testing
         runs-on: ubuntu-latest  # Changed to a Linux runner
         needs: Installation
         steps:

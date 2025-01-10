@@ -1,36 +1,42 @@
 name: Build and Deploy Code
 
-on: [push,pull_request]
+on: [push, pull_request]
     # push:
     #     branches:
     #         - "main"
     # pull_request:
     #     branches:
     #         - "test"
-environment:
-    name: testing
+
 env:
-    DATABASE_HOSTNAME=${{secrets.DATABASE_HOSTNAME}}
-    DATABASE_PORT=${{secrets.DATABASE_PORT}}
-    DATABASE_PASSWORD=${{secrets.DATABASE_PASSWORD}}
-    DATABASE_NAME=${{secrets.DATABASE_NAME}}
-    DATABASE_USERNAME=${{secrets.DATABASE_USERNAME}}
-    SECRET_KEY=${{secrets.SECRET_KEY}}
-    ALGORITHM=${{secrets.ALGORITHM}}
-    ACCESS_TOKEN_EXPIRE_MINUTES=${{secrets.ACCESS_TOKEN_EXPIRE_MINUTES}}
+    DATABASE_HOSTNAME: ${{ secrets.DATABASE_HOSTNAME }}
+    DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
+    DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+    DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+    DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+    SECRET_KEY: ${{ secrets.SECRET_KEY }}
+    ALGORITHM: ${{ secrets.ALGORITHM }}
+    ACCESS_TOKEN_EXPIRE_MINUTES: ${{ secrets.ACCESS_TOKEN_EXPIRE_MINUTES }}
 
 jobs:
     Installation:
         runs-on: windows-latest
-        steps: 
-            - name: Install python version 3.12
+        # environment: testing
+        steps:
+            - name: Checkout code
               uses: actions/checkout@v2
+
+            - name: Set up Python 3.12
+              uses: actions/setup-python@v2
               with:
                 python-version: "3.12"
+
             - name: Update pip
               run: python -m pip install --upgrade pip
-            - name: Install all Dependencies
+
+            - name: Install all dependencies
               run: pip install -r requirements.txt
+
     Test:
         runs-on: windows-latest
         needs: Installation

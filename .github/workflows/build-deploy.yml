@@ -67,7 +67,7 @@ jobs:
               uses: actions/checkout@v2
 
             - name: Install pytest, httpx, fastapi
-              run: pip install fastapi httpx sqlalchemy pydantic_settings pydantic alembic bcrypt pydantic[email] jose uvicorn jwt psycopg2 pytest
+              run: pip install fastapi httpx sqlalchemy pydantic_settings pydantic alembic bcrypt pydantic[email] jose python-jose uvicorn jwt psycopg2 pytest
 
             - name: Run pytest tests
               run: pytest

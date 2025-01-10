@@ -18,7 +18,9 @@ def test_sqlalchemy(db: Session = Depends(get_db)):
 
 # Create a new post
 @router.post("/posts",status_code=status.HTTP_201_CREATED,response_model=schemas.Post)
-def create_post(post: Post,db: Session = Depends(get_db),user_id: int = Depends(oauth2.get_current_user)):
+# def create_post(post: Post,db: Session = Depends(get_db),user_id: int = Depends(oauth2.get_current_user)):
+def create_post(post: Post,db: Session = Depends(get_db)):
+
     # print(user_id)
 
 # def create_post(post: Post,db: Session = Depends(get_db),current_user: int = Depends(oauth2.get_current_user)):
@@ -31,7 +33,9 @@ def create_post(post: Post,db: Session = Depends(get_db),user_id: int = Depends(
 
 # Get all posts
 @router.get("/posts",response_model=List[schemas.Post])
-def get_posts(db: Session = Depends(get_db),user_id: int = Depends(oauth2.get_current_user),
+# def get_posts(db: Session = Depends(get_db),user_id: int = Depends(oauth2.get_current_user),
+#               limit: int = 10, skip: int = 0, search: Optional[str]=""):
+def get_posts(db: Session = Depends(get_db),user_id: int = Depends(get_db),
               limit: int = 10, skip: int = 0, search: Optional[str]=""):
     # posts = db.query(models.PostModel).all()
     # return posts
@@ -60,7 +64,9 @@ def get_post_id(post_id: int, db: Session = Depends(get_db)):
 
 # Update a post by Id
 @router.put("/posts/{post_id}",response_model=schemas.Post)
-def update_post(post_id: int,post: Post,db: Session = Depends(get_db),user_id: int = Depends(oauth2.get_current_user)):
+# def update_post(post_id: int,post: Post,db: Session = Depends(get_db),user_id: int = Depends(oauth2.get_current_user)):
+def update_post(post_id: int,post: Post,db: Session = Depends(get_db),user_id: int = Depends(get_db)): # without authentication of user login or not
+
     post_to_update = db.query(models.PostModel).filter(models.PostModel.Id == post_id).first()
     post_to_update.Name = post.Name
     post_to_update.Domain = post.Domain
@@ -74,8 +80,10 @@ def update_post(post_id: int,post: Post,db: Session = Depends(get_db),user_id: i
     return post_to_update
 
 @router.delete("/posts/{post_id}", response_model=schemas.Post)
-def delete_post(post_id: int, db: Session = Depends(get_db),user_id: int = Depends(oauth2.get_current_user)):
-    post = db.query(models.PostModel).filter(models.PostModel.id == post_id).first()    
+# def delete_post(post_id: int, db: Session = Depends(get_db),user_id: int = Depends(oauth2.get_current_user)):
+def delete_post(post_id: int, db: Session = Depends(get_db),user_id: int = Depends(get_db)):
+
+    post = db.query(models.PostModel).filter(models.PostModel.Id == post_id).first()    
     if post is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Post with id {post_id} not found!!")
     db.delete(post)

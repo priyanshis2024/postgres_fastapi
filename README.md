@@ -12,3 +12,5 @@
 ### 8. Docker Containerization
 ### 9. Testing
 ### 10. Pytesting
+### 11. Testing in Authenticated token
+### 12. CI/CD Pipelines

@@ -32,7 +32,14 @@ jobs:
             - name: Install all Dependencies
               run: pip install -r requirements.txt
     Test:
-        - name: Test with pytest
-          run: |
-         pip install pytest
-         pytest                
+        runs-on: windows-latest
+        needs: Installation
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Install pytest
+              run: pip install pytest
+
+            - name: Run pytest tests
+              run: pytest

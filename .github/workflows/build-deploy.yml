@@ -49,3 +49,6 @@ jobs:
 
             - name: Run pytest tests
               run: pytest
+            
+            - name: Install fastapi
+              run: pip install fastapi pytest
